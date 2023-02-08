@@ -7,6 +7,7 @@ import SignIn from "./Components/SignIn";
 import SignUp from "./Components/SignUp";
 import Error from "./Components/Error";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Contact from "./Components/Contact";
 
 const appRouter = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
       },
       {
         path: "/signin",
