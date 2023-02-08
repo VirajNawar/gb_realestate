@@ -1,3 +1,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body{
+    background-color:#090D2B;
+    color:#FFF;
+}
+
+.sign-in{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.btn,
+.btn-google{
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+.btn:hover{
+background-color: #FFF;
+outline: 2px solid #1D9FEF;
+color:#1D9FEF;
+transform: scaleX(1);
+}
+
+.btn-google:hover{
+    background-color: #FFF;
+    outline: 2px solid #f60c0c;
+    color:#f60c0c;
+    transform: scaleX(1);
+}
+
+.or::before,
+.or::after{
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
