@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {FcGoogle} from 'react-icons/fc'
+import {getAuth, createUserWithEmailAndPassword, updateProfile} from 'firebase/auth'
+import {db} from '../firebase'
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 function SignUp() {
   const [formData,setFormData] = useState({
     name:"",
@@ -9,12 +12,38 @@ function SignUp() {
   })
 
   const {name,email, password} = formData
+  const navigate = useNavigate()
 
  const handleChange = (e) => {
     setFormData((values)=>({
       ...values,
       [e.target.id]: e.target.value,
     }))
+ }
+
+ const handleFormSubmit = async (e) =>{
+    e.preventDefault()
+
+    try{
+
+      const auth =  getAuth()
+      const userDetails = await createUserWithEmailAndPassword(auth,email,password)
+      updateProfile(auth.currentUser,{
+        displayName:name, 
+      })
+      const user =  userDetails.user
+      console.log(user)
+      
+      const formDataCopy = { ...formData };
+      delete formDataCopy.password;
+      formDataCopy.timestamp = serverTimestamp();
+
+      await setDoc(doc(db, "users", user.uid), formDataCopy);
+
+      navigate("/")
+    } catch(error){
+
+    }
  }
   return (
     <div className='sign-in
@@ -39,7 +68,7 @@ function SignUp() {
                     px-8 
                     my-6
                     ">
-      <form action="" >
+      <form action="" onSubmit={handleFormSubmit}>
         <input type="text" 
         value={name}
         id='name'
@@ -98,8 +127,9 @@ function SignUp() {
 
           </p> 
         </div>
-      </form>
-      <button type='submit' className='btn
+      <button type='submit' 
+              onSubmit={handleFormSubmit}
+              className='btn
                         w-full
                       bg-blue-700
                         rounded-md
@@ -154,6 +184,7 @@ function SignUp() {
                                 
                   '  /> Continue with google
       </button>
+      </form>
     </div>
     </div>
   )

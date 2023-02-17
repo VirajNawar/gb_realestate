@@ -82,7 +82,6 @@ function SigIn() {
 
           </p> 
         </div>
-      </form>
       <button type='submit' className='btn
                         w-full
                       bg-blue-700
@@ -138,6 +137,7 @@ function SigIn() {
                                 
                   '  /> Continue with google
       </button>
+      </form>
     </div>
     </div>
   )
