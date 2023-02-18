@@ -9,6 +9,7 @@ import Error from "./Components/Error";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Contact from "./Components/Contact";
 import PropertyDetails from "./Components/PropertyDetails";
+import HouseContextProvider from "./Components/HouseContext";
 
 const appRouter = createBrowserRouter([
   {
@@ -41,5 +42,7 @@ const appRouter = createBrowserRouter([
 ]);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-<RouterProvider router={appRouter} />
+  <HouseContextProvider>
+    <RouterProvider router={appRouter} />
+  </HouseContextProvider>
 );

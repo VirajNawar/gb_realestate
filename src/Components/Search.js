@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import CountryDropdown from './CountryDropdown'
 import PropertyDropdown from './PropertyDropdown'
 import PriceRangeDropdown from './PriceRangeDropdown'
 import {RiSearch2Line} from 'react-icons/ri'
+import { HouseContext } from './HouseContext'
 
 function Search() {
+  const {handleClick} = useContext(HouseContext)
+  
+
   return (
     <div className='px-[30px] 
                     py-6 
@@ -27,8 +31,19 @@ function Search() {
       <CountryDropdown />
       <PropertyDropdown />
       <PriceRangeDropdown />
-      <button  className='bg-blue-700
-                            
+      <button onClick={()=>handleClick()}  className='bg-blue-700
+                            hover:bg-blue-900
+                            transition
+                            w-full
+                            lg:max-w-[162px]
+                            h-16
+                            rounded-lg
+                            flex
+                            justify-center
+                            items-center
+                            text-white
+                            text-lg
+
                             '>
         <RiSearch2Line />
       </button>
