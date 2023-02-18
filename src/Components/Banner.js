@@ -17,6 +17,8 @@ function Banner() {
                       "
       >
         <div className='lg:ml-8 
+                        lg:mr-5
+                        xl:mr-5
                         xl:ml-[135px] 
                         flex 
                         flex-col 
