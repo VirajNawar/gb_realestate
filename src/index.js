@@ -8,6 +8,7 @@ import SignUp from "./Components/SignUp";
 import Error from "./Components/Error";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Contact from "./Components/Contact";
+import PropertyDetails from "./Components/PropertyDetails";
 
 const appRouter = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/signup",
         element: <SignUp />,
+      },
+      {
+        path: "/property/:id",
+        element: <PropertyDetails />,
       },
     ],
   },
