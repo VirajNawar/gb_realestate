@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {FcGoogle} from 'react-icons/fc'
-import {getAuth, createUserWithEmailAndPassword, updateProfile} from 'firebase/auth'
+import {getAuth, createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup} from 'firebase/auth'
 import {db} from '../firebase'
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { toast } from 'react-toastify'
 
 function SignUp() {
@@ -49,6 +49,33 @@ function SignUp() {
         toast.error("Something went wrong with registration")
     }
  }
+
+  const handleGoogleClick = async () => {
+      try {
+          const auth = getAuth()
+          const provider = new GoogleAuthProvider()
+          const result = await signInWithPopup(auth, provider)
+          const user = result.user
+          
+          // Check user exists
+          const ref = doc(db, "users", user.uid)
+          const response = await getDoc(ref)
+
+          if(!response.exists()){
+            await setDoc(ref, {
+              name: user.displayName,
+              email: user.email,
+              timestamp: serverTimestamp(),
+            })
+          }
+
+          navigate("/")
+      } 
+      catch (error) {
+        toast.error("Could not authorize with Google")
+        
+      }
+  }
   return (
     <div className='sign-in
                     flex 
@@ -166,7 +193,7 @@ function SignUp() {
           </p>
       </div>
 
-      <button type='submit' className='btn-google
+      <button type='button' className='btn-google
                         flex
                         items-center
                         justify-center
@@ -181,6 +208,7 @@ function SignUp() {
                         
                         active:bg-red-800
                         '     
+              onClick={handleGoogleClick}          
         >
         <FcGoogle className='bg-white
                               rounded-full
