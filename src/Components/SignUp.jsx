@@ -1,41 +1,41 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import {FcGoogle} from 'react-icons/fc'
-import {getAuth, createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup} from 'firebase/auth'
-import {db} from '../firebase'
-import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { db } from '../firebase'
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { toast } from 'react-toastify'
+import GoogleAuth from './GoogleAuth';
 
 function SignUp() {
-  const [formData,setFormData] = useState({
-    name:"",
-    email:"",
-    password:"",
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
   })
 
-  const {name,email, password} = formData
+  const { name, email, password } = formData
   const navigate = useNavigate()
 
- const handleChange = (e) => {
-    setFormData((values)=>({
+  const handleChange = (e) => {
+    setFormData((values) => ({
       ...values,
       [e.target.id]: e.target.value,
     }))
- }
+  }
 
- const handleFormSubmit = async (e) =>{
+  const handleFormSubmit = async (e) => {
     e.preventDefault()
 
-    try{
+    try {
 
-      const auth =  getAuth()
-      const userDetails = await createUserWithEmailAndPassword(auth,email,password)
-      updateProfile(auth.currentUser,{
-        displayName:name, 
+      const auth = getAuth()
+      const userDetails = await createUserWithEmailAndPassword(auth, email, password)
+      updateProfile(auth.currentUser, {
+        displayName: name,
       })
-      const user =  userDetails.user
+      const user = userDetails.user
       console.log(user)
-      
+
       const formDataCopy = { ...formData };
       delete formDataCopy.password;
       formDataCopy.timestamp = serverTimestamp();
@@ -44,38 +44,13 @@ function SignUp() {
       // toast.success("Sign up Success")
 
       navigate("/")
-    } 
-    catch(error){
-        toast.error("Something went wrong with registration")
     }
- }
-
-  const handleGoogleClick = async () => {
-      try {
-          const auth = getAuth()
-          const provider = new GoogleAuthProvider()
-          const result = await signInWithPopup(auth, provider)
-          const user = result.user
-          
-          // Check user exists
-          const ref = doc(db, "users", user.uid)
-          const response = await getDoc(ref)
-
-          if(!response.exists()){
-            await setDoc(ref, {
-              name: user.displayName,
-              email: user.email,
-              timestamp: serverTimestamp(),
-            })
-          }
-
-          navigate("/")
-      } 
-      catch (error) {
-        toast.error("Could not authorize with Google")
-        
-      }
+    catch (error) {
+      toast.error("Something went wrong with registration")
+    }
   }
+
+
   return (
     <div className='sign-in
                     flex 
@@ -90,21 +65,21 @@ function SignUp() {
                     rounded-xl
                     
       '>
-    
-    <h1 className='text-3xl text-center mt-6 font-bold'>
-    Sign Up
-      </h1>  
-    <div className="form 
+
+      <h1 className='text-3xl text-center mt-6 font-bold'>
+        Sign Up
+      </h1>
+      <div className="form 
                     w-full 
                     px-8 
                     my-6
                     ">
-      <form action="" onSubmit={handleFormSubmit}>
-        <input type="text" 
-        value={name}
-        id='name'
-        onChange={handleChange}
-        className="w-full 
+        <form action="" onSubmit={handleFormSubmit}>
+          <input type="text"
+            value={name}
+            id='name'
+            onChange={handleChange}
+            className="w-full 
                     rounded-md
                   border-[#090D2B]
                     transition ease-in-out
@@ -113,13 +88,13 @@ function SignUp() {
                     text-white
                     
                     "
-        placeholder='Enter Full Name'
-        />
-        <input type="email" 
-        value={email}
-        id='email'
-        onChange={handleChange}
-        className="w-full 
+            placeholder='Enter Full Name'
+          />
+          <input type="email"
+            value={email}
+            id='email'
+            onChange={handleChange}
+            className="w-full 
                     rounded-md
                   border-[#090D2B]
                     transition ease-in-out
@@ -127,13 +102,13 @@ function SignUp() {
                     bg-[#272C64]
                     text-white
                     "
-        placeholder='Enter Email address'
-        />
-        <input type="password" 
-        value={password}
-        id='password'
-        onChange={handleChange}
-        className="w-full 
+            placeholder='Enter Email address'
+          />
+          <input type="password"
+            value={password}
+            id='password'
+            onChange={handleChange}
+            className="w-full 
                   rounded-md
                 border-[#090D2B]
                   transition ease-in-out
@@ -141,26 +116,26 @@ function SignUp() {
                 bg-[#272C64]
                 text-white
                     "
-        placeholder='Enter Password'
-        />
+            placeholder='Enter Password'
+          />
 
-        <div className="register">
-          <p>Have an account ? 
-            <Link to="/signin" 
-            className='text-blue-500 
+          <div className="register">
+            <p>Have an account ?
+              <Link to="/signin"
+                className='text-blue-500 
             mx-2
             hover:text-blue-700
             transition duration-200 ease-in-out
             '
-            >
-              Sign In
-            </Link>
+              >
+                Sign In
+              </Link>
 
-          </p> 
-        </div>
-      <button type='submit' 
-              onSubmit={handleFormSubmit}
-              className='btn
+            </p>
+          </div>
+          <button type='submit'
+            onSubmit={handleFormSubmit}
+            className='btn
                         w-full
                       bg-blue-700
                         rounded-md
@@ -169,12 +144,12 @@ function SignUp() {
                         transition duration-150 ease-in-out
                         uppercase
                         active:bg-blue-900
-                        '     
-        >
-        Sign Up
-      </button>
+                        '
+          >
+            Sign Up
+          </button>
 
-      <div className="or
+          <div className="or
                       my-4
                       flex
                       items-center
@@ -185,39 +160,17 @@ function SignUp() {
                       after:flex-1
                     after:border-white
                       ">
-        <p className='text-center
+            <p className='text-center
                       font-semibold
                       mx-5
                     ' >
-          OR
-          </p>
-      </div>
+              OR
+            </p>
+          </div>
 
-      <button type='button' className='btn-google
-                        flex
-                        items-center
-                        justify-center
-                        bg-red-600
-                        text-white
-                        w-full
-                        rounded-md
-                        p-2
-                        mt-4
-                        transition duration-150 ease-in-out
-                        uppercase
-                        
-                        active:bg-red-800
-                        '     
-              onClick={handleGoogleClick}          
-        >
-        <FcGoogle className='bg-white
-                              rounded-full
-                              mr-3
-                                
-                  '  /> Continue with google
-      </button>
-      </form>
-    </div>
+          <GoogleAuth />
+        </form>
+      </div>
     </div>
   )
 }

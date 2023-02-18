@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import {FcGoogle} from 'react-icons/fc'
+import { Link, useNavigate } from 'react-router-dom'
+import GoogleAuth from './GoogleAuth'
+import { signInWithEmailAndPassword,  getAuth } from 'firebase/auth'
+import { toast } from 'react-toastify'
+
 function SigIn() {
   const [formData,setFormData] = useState({
     email:"",
@@ -9,11 +12,28 @@ function SigIn() {
 
   const {email, password} = formData
 
+  const navigate = useNavigate()
  const handleChange = (e) => {
     setFormData((values)=>({
       ...values,
       [e.target.id]: e.target.value,
     }))
+ }
+
+ const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    try {
+      const auth = getAuth()
+      const userInfo = await signInWithEmailAndPassword(auth, email, password)
+
+      if (userInfo.user) {
+        navigate("/")
+      }
+    } 
+    catch (error) {
+      toast.error("Bad user credentials")  
+    }
  }
   return (
     <div className='sign-in
@@ -38,7 +58,7 @@ function SigIn() {
                     px-8 
                     my-6
                     ">
-      <form action="" >
+      <form action=""  onSubmit={handleSubmit}>
         <input type="email" 
         value={email}
         id='email'
@@ -115,28 +135,7 @@ function SigIn() {
           </p>
       </div>
 
-      <button type='submit' className='btn-google
-                        flex
-                        items-center
-                        justify-center
-                        bg-red-600
-                        text-white
-                        w-full
-                        rounded-md
-                        p-2
-                        mt-4
-                        transition duration-150 ease-in-out
-                        uppercase
-                        
-                        active:bg-red-800
-                        '     
-        >
-        <FcGoogle className='bg-white
-                              rounded-full
-                              mr-3
-                                
-                  '  /> Continue with google
-      </button>
+      <GoogleAuth />
       </form>
     </div>
     </div>
