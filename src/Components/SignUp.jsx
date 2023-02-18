@@ -4,6 +4,8 @@ import {FcGoogle} from 'react-icons/fc'
 import {getAuth, createUserWithEmailAndPassword, updateProfile} from 'firebase/auth'
 import {db} from '../firebase'
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { toast } from 'react-toastify'
+
 function SignUp() {
   const [formData,setFormData] = useState({
     name:"",
@@ -39,10 +41,12 @@ function SignUp() {
       formDataCopy.timestamp = serverTimestamp();
 
       await setDoc(doc(db, "users", user.uid), formDataCopy);
+      // toast.success("Sign up Success")
 
       navigate("/")
-    } catch(error){
-
+    } 
+    catch(error){
+        toast.error("Something went wrong with registration")
     }
  }
   return (
