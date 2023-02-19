@@ -63,6 +63,7 @@ function SignUp() {
                     bg-[#060822]
                     mt-9
                     rounded-xl
+                    mb-12
                     
       '>
 

@@ -54,3 +54,27 @@ transform: scaleX(1);
 .or::after{
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
+
+.card {
+  width: 255px;
+  padding: 1em;
+  margin: 1.8em;
+  background-color: #060822;
+  border-radius: 0.5em;
+  box-shadow: rgba(9, 13, 35, 0.2) 0px 2px 8px 0px;
+}
+
+.card-logo {
+  width: 100%;
+  margin-bottom: 0.6em;
+}
+
+.shimmer__card__logo {
+  padding: 2.4em;
+  background-color: #272C64;
+}
+
+.shimmer__card__title {
+  padding: 0.4em;
+  background-color: #272C64;
+}

@@ -22,12 +22,12 @@ function CountryDropdown() {
         </div>
         {isOpen ? (
           <RiArrowDownSLine className="dropdown-icon-secondary" />
-          ) : (
+        ) : (
           <RiArrowUpSLine className="dropdown-icon-secondary" />
         )}
       </Menu.Button>
 
-      <Menu.Items className='dropdown-menu'>
+      <Menu.Items className="dropdown-menu">
         {countries.map((country, index) => {
           return (
             <Menu.Item
